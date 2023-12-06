@@ -5,26 +5,17 @@ import ru.ok.itmo.chat.data.dto.MessageDTO
 import java.util.UUID
 import javax.inject.Inject
 
-class MessagesLocalDataSource @Inject constructor() {
+class MessagesLocalDataSource @Inject constructor(
+    private val messageStorage: MessageStorage
+) {
 
+    // todo рассказать про mvvm
     fun getMessages(channelId: ChannelId): List<MessageDTO>? {
-        return (1..10).map {
-            MessageDTO(
-                id = it.toString(),
-                from = UUID.randomUUID().toString(),
-                to = channelId,
-                data = listOf(
-                    MessageDTO.AttachDTO.TextDTO(
-                        text = randomMessage()
-                    )
-                ),
-                time = 0L
-            )
-        }
+        return messageStorage.get()
     }
 
     fun cacheMessages(remoteMessages: List<MessageDTO>) {
-
+        messageStorage.put()
     }
 
     private fun randomMessage(): String {
